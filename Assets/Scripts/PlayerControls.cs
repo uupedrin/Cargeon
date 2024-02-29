@@ -11,6 +11,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float maxSpeed;
     [SerializeField] float rotateSpeed;
     [SerializeField] float velocityDamage;
+    [SerializeField] float turboForce;
     Vector3 respawnLocation;
 
     void Start()
@@ -37,13 +38,21 @@ public class PlayerControls : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Respawn") 
+        switch(other.gameObject.tag)
         {
+            case "Respawn":
             body.constraints = RigidbodyConstraints.FreezeAll;
             body.constraints = RigidbodyConstraints.FreezeRotation;
             transform.Rotate(transform.rotation.eulerAngles);
             transform.position = new Vector3(respawnLocation.x, respawnLocation.y + 0.5f, respawnLocation.z);
             GameManager.manager.RearrangePlatforms();
+            break;
+
+            case "Turbo":
+            body.constraints = RigidbodyConstraints.FreezeAll;
+            body.constraints = RigidbodyConstraints.FreezeRotation;
+            body.AddForce(-other.transform.forward * turboForce);
+            break;
         }
     }
 }
