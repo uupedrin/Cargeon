@@ -12,8 +12,20 @@ public class Enemy : MonoBehaviour
         body = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    void OnCollisionEnter()
     {
-        body.AddForce(force * Vector3.right);
+        Bounce();
+    }
+
+    void OnTriggerEnter()
+    {
+        Bounce();
+    }
+
+    void Bounce()
+    {
+        body.constraints = RigidbodyConstraints.FreezeAll;
+        body.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+        body.AddForce(Vector3.up * force);
     }
 }
