@@ -45,13 +45,18 @@ public class PlayerControls : MonoBehaviour
             body.constraints = RigidbodyConstraints.FreezeRotation;
             transform.Rotate(transform.rotation.eulerAngles);
             transform.position = new Vector3(respawnLocation.x, respawnLocation.y + 0.5f, respawnLocation.z);
-            GameManager.manager.RearrangePlatforms();
+            GameManager.manager.rPlatforms.RearrangePlatforms();
             break;
 
             case "Turbo":
             body.constraints = RigidbodyConstraints.FreezeAll;
             body.constraints = RigidbodyConstraints.FreezeRotation;
             body.AddForce(-other.transform.forward * turboForce);
+            break;
+
+            case "Finish":
+            GameManager.manager.uiManager.SceneChange("Victory");
+            GameManager.manager.countingTime = false;
             break;
         }
     }

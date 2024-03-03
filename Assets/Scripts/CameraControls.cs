@@ -10,10 +10,6 @@ public class CameraControls : MonoBehaviour
     void FixedUpdate()
     {
         transform.Rotate(0, Lateral() * rotationScale, 0, Space.World);
-        if(Input.GetKey(KeyCode.Space)) 
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
         transform.position = new Vector3(player.transform.position.x, 0, player.transform.position.z);
     }
 
