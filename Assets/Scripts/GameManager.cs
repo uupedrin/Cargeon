@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] platforms;
     Vector3[] platformPositions;
 	public static GameManager manager;
+    public UIManager uiManager;
+    public float maxLevelTimer = 0f;
+    public float levelTimer = 0f; //current Time
 
     void Start()
     {
@@ -19,12 +22,16 @@ public class GameManager : MonoBehaviour
 			Destroy(this.gameObject);
 		}
 		DontDestroyOnLoad(gameObject);
-        platformPositions = new Vector3[platforms.Length];
-        for(int i=0; i<platforms.Length; i++)
+
+        if(platforms!=null && platforms.Length>0)
         {
-            platformPositions[i] = platforms[i].transform.position;
-            Debug.Log(platformPositions[i]);
-        }
+            platformPositions = new Vector3[platforms.Length];
+            for(int i=0; i<platforms.Length; i++)
+            {
+                platformPositions[i] = platforms[i].transform.position;
+                Debug.Log(platformPositions[i]);
+            }
+        } 
     }
 
     public void RearrangePlatforms()
