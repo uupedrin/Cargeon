@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text timer;
+    [SerializeField] private TMP_Text timerGame;
 
     void Start()
     {
@@ -16,7 +18,15 @@ public class UIManager : MonoBehaviour
 
         if(timer != null)
         {
-            timer.text = (gManager.maxLevelTimer - gManager.levelTimer).ToString();
+            timer.text = (GameManager.manager.maxLevelTimer - GameManager.manager.levelTimer).ToString();
+        }
+    }
+
+    void Update()
+    {
+        if(timerGame != null)
+        {
+            timerGame.text = GameManager.manager.levelTimer.ToString();
         }
     }
 

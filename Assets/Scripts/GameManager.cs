@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] platforms;
+    //[SerializeField] GameObject[] platforms;
     Vector3[] platformPositions;
 	public static GameManager manager;
     public UIManager uiManager;
+    public ResetPlatforms rPlatforms;
     public float maxLevelTimer = 0f;
     public float levelTimer = 0f; //current Time
+    public bool countingTime = false;
 
-    void Start()
+    void Awake()
     {
         if (manager == null)
 		{
@@ -22,25 +24,29 @@ public class GameManager : MonoBehaviour
 			Destroy(this.gameObject);
 		}
 		DontDestroyOnLoad(gameObject);
-
-        if(platforms!=null && platforms.Length>0)
-        {
-            platformPositions = new Vector3[platforms.Length];
-            for(int i=0; i<platforms.Length; i++)
-            {
-                platformPositions[i] = platforms[i].transform.position;
-                Debug.Log(platformPositions[i]);
-            }
-        } 
     }
 
-    public void RearrangePlatforms()
+    void Start()
     {
-        for(int i=0; i<platforms.Length; i++)
+        levelTimer = maxLevelTimer;
+    }
+
+    void Update()
+    {
+        if(countingTime)
         {
-            platforms[i].transform.position = platformPositions[i];
-            platforms[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            platforms[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+            if(levelTimer <= 0) 
+            {
+                GameManager.manager.uiManager.SceneChange("Defeat");
+                countingTime = false;
+            }
+            levelTimer -= Time.deltaTime;
         }
+    }
+
+    public void TimerStart()
+    {
+        countingTime = true;
+        levelTimer = maxLevelTimer;
     }
 }
