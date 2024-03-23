@@ -1029,6 +1029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 0}
+  timerGame: {fileID: 0}
 --- !u!4 &1170891272
 Transform:
   m_ObjectHideFlags: 0
@@ -1224,10 +1225,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d4037da99ab744ba51b4ec42e22bc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platforms: []
   uiManager: {fileID: 0}
-  maxLevelTimer: 0
+  rPlatforms: {fileID: 0}
+  maxLevelTimer: 90
   levelTimer: 0
+  countingTime: 0
 --- !u!4 &1976146228
 Transform:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ TagManager:
   - Floor
   - Turbo
   - Reset
+  - Enemy
+  - Bumper
   layers:
   - Default
   - TransparentFX

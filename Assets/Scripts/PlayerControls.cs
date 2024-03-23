@@ -6,34 +6,39 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour
 {
     Rigidbody body;
-    [SerializeField] float moveForce;
+    [SerializeField] float initMoveForce;
+    float moveForce;
     [SerializeField] float brakeForce;
     [SerializeField] float maxSpeed;
     [SerializeField] float rotateSpeed;
     [SerializeField] float velocityDamage;
     [SerializeField] float turboForce;
+    [SerializeField] float raycastDistance;
     Vector3 respawnLocation;
 
     void Start()
     {
         body = GetComponent<Rigidbody>();
+        moveForce = initMoveForce;
     }
 
     void FixedUpdate()
     {
         float v = Input.GetAxisRaw("Vertical");
         float h = Input.GetAxisRaw("Horizontal");
+        Debug.Log(GroundedCheck());
+        if(GroundedCheck()) moveForce = initMoveForce;
+        else moveForce = initMoveForce / 2;
         body.AddForce(v * moveForce * transform.forward);
         transform.Rotate(h * rotateSpeed * transform.up);
         if(Input.GetKey(KeyCode.Space)) body.AddForce(body.velocity * -1 * brakeForce);
         if(body.velocity.magnitude > maxSpeed) body.velocity = Vector3.ClampMagnitude(body.velocity, maxSpeed);
-        
     }
     
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Floor") respawnLocation = collision.transform.position;
-        Debug.Log(respawnLocation);
+        if(collision.gameObject.tag == "Bumper") body.AddForce((collision.gameObject.transform.position - transform.position) * -10, ForceMode.Impulse);
     }
 
     void OnTriggerEnter(Collider other)
@@ -43,7 +48,7 @@ public class PlayerControls : MonoBehaviour
             case "Respawn":
             body.constraints = RigidbodyConstraints.FreezeAll;
             body.constraints = RigidbodyConstraints.FreezeRotation;
-            transform.Rotate(transform.rotation.eulerAngles);
+            transform.Rotate(-transform.rotation.eulerAngles);
             transform.position = new Vector3(respawnLocation.x, respawnLocation.y + 0.5f, respawnLocation.z);
             GameManager.manager.rPlatforms.RearrangePlatforms();
             break;
@@ -59,5 +64,10 @@ public class PlayerControls : MonoBehaviour
             GameManager.manager.countingTime = false;
             break;
         }
+    }
+
+    public bool GroundedCheck()
+    {
+        return Physics.Raycast(transform.position, -Vector3.up, raycastDistance);
     }
 }
