@@ -9,6 +9,7 @@ TagManager:
   - Reset
   - Enemy
   - Bumper
+  - LVL01End
   layers:
   - Default
   - TransparentFX
